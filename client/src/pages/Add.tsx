@@ -14,7 +14,8 @@ export default function Add() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setBook((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value,
+      [e.target.name]:
+        e.target.name === "price" ? parseFloat(e.target.value) : e.target.value,
     }));
   };
 

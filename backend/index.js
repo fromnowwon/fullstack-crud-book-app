@@ -1,3 +1,8 @@
+/**
+ * 기존 MySQL 기반 백엔드 코드입니다.
+ * 현재는 Supabase 백엔드(supabase.js)를 사용 중이며,
+ * 이 파일은 참고용으로 남겨두었습니다.
+ */
 import express from "express";
 import mysql from "mysql";
 import dotenv from "dotenv";

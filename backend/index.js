@@ -1,6 +1,7 @@
 import express from "express";
 import mysql from "mysql";
 import dotenv from "dotenv";
+import cors from "cors";
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ db.connect((err) => {
 });
 
 app.use(express.json());
+app.use(cors());
 
 app.get("/", (req, res) => {
   res.json("Hello from backend");

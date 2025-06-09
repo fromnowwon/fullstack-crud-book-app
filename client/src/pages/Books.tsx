@@ -9,14 +9,8 @@ export default function Books() {
     const fetchBooks = async () => {
       try {
         const response = await fetch("http://localhost:8800/books");
-
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-
+        if (!response.ok) throw new Error("Network response was not ok");
         const data = await response.json();
-        console.log(data);
-
         setBooks(data);
       } catch (error) {
         console.error("Failed to fetch books:", error);
@@ -32,9 +26,7 @@ export default function Books() {
         method: "DELETE",
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to delete book");
-      }
+      if (!response.ok) throw new Error("Failed to delete book");
 
       setBooks((prevBooks) => prevBooks.filter((book) => book.id !== id));
     } catch (error) {
@@ -43,30 +35,58 @@ export default function Books() {
   };
 
   return (
-    <div>
-      <h1>Book List</h1>
-      <div>
+    <div className="max-w-5xl mx-auto p-6">
+      <h1 className="text-3xl font-bold mb-6 text-center">📚 My Book List</h1>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {books.length > 0 ? (
           books.map((book) => (
-            <div key={book.id}>
-              <h2>{book.title}</h2>
-              <p>Desc: {book.desc}</p>
-              <p>cover: {book.cover}</p>
-              <span>{book.price}</span>
-
+            <div
+              key={book.id}
+              className="bg-white shadow-md rounded-2xl p-4 flex flex-col justify-between"
+            >
               <div>
-                <button onClick={() => handleDelete(book.id)}>Delete</button>
+                <h2 className="text-xl font-semibold text-gray-800 mb-2">
+                  {book.title}
+                </h2>
+                <p className="text-gray-600 mb-1">📖 {book.desc}</p>
+
+                <span className="text-green-600 font-medium mt-2 block">
+                  ₩ {book.price}
+                </span>
+              </div>
+
+              <div className="flex justify-between mt-4">
+                <button
+                  onClick={() => handleDelete(book.id)}
+                  className="px-4 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                >
+                  삭제
+                </button>
+                <Link
+                  to={`/update/${book.id}`}
+                  className="px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+                >
+                  수정
+                </Link>
               </div>
             </div>
           ))
         ) : (
-          <p>No books available</p>
+          <p className="col-span-full text-center text-gray-500">
+            No books available
+          </p>
         )}
       </div>
 
-      <button>
-        <Link to="/add">Add</Link>
-      </button>
+      <div className="mt-10 text-center">
+        <Link
+          to="/add"
+          className="inline-block px-6 py-2 bg-emerald-600 text-white font-medium rounded hover:bg-emerald-700 transition"
+        >
+          + 새로운 책 추가
+        </Link>
+      </div>
     </div>
   );
 }

@@ -26,6 +26,22 @@ export default function Books() {
     fetchBooks();
   }, []);
 
+  const handleDelete = async (id: number) => {
+    try {
+      const response = await fetch(`http://localhost:8800/books/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete book");
+      }
+
+      setBooks((prevBooks) => prevBooks.filter((book) => book.id !== id));
+    } catch (error) {
+      console.error("Failed to delete book:", error);
+    }
+  };
+
   return (
     <div>
       <h1>Book List</h1>
@@ -37,6 +53,10 @@ export default function Books() {
               <p>Desc: {book.desc}</p>
               <p>cover: {book.cover}</p>
               <span>{book.price}</span>
+
+              <div>
+                <button onClick={() => handleDelete(book.id)}>Delete</button>
+              </div>
             </div>
           ))
         ) : (

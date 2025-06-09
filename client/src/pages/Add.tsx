@@ -23,7 +23,7 @@ export default function Add() {
     e.preventDefault();
 
     try {
-      await fetch("http://localhost:8800/books", {
+      await fetch("http://localhost:8801/books", {
         method: "POST",
         body: JSON.stringify(book),
         headers: {

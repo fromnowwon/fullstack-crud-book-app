@@ -5,7 +5,7 @@ export default function Update() {
   const [book, setBook] = useState({
     title: "",
     desc: "",
-    cover: "",
+    cover: null,
     price: null,
   });
 
@@ -25,8 +25,8 @@ export default function Update() {
     e.preventDefault();
 
     try {
-      await fetch(`http://localhost:8800/books/${bookId}`, {
-        method: "POST",
+      await fetch(`http://localhost:8801/books/${bookId}`, {
+        method: "PUT",
         body: JSON.stringify(book),
         headers: {
           "Content-Type": "application/json",

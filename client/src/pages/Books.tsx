@@ -9,7 +9,7 @@ export default function Books() {
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const response = await fetch("http://localhost:8800/books");
+        const response = await fetch("http://localhost:8801/books");
         if (!response.ok) throw new Error("Network response was not ok");
         const data = await response.json();
         setBooks(data);
@@ -23,7 +23,7 @@ export default function Books() {
 
   const handleDelete = async (id: number) => {
     try {
-      const response = await fetch(`http://localhost:8800/books/${id}`, {
+      const response = await fetch(`http://localhost:8801/books/${id}`, {
         method: "DELETE",
       });
 

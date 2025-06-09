@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8801";
+
 export default function Add() {
   const [book, setBook] = useState({
     title: "",
@@ -23,7 +25,7 @@ export default function Add() {
     e.preventDefault();
 
     try {
-      await fetch("http://localhost:8801/books", {
+      await fetch(`${API_URL}/books`, {
         method: "POST",
         body: JSON.stringify(book),
         headers: {

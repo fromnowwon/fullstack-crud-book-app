@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8801";
+
 export default function Update() {
   const [book, setBook] = useState({
     title: "",
@@ -25,7 +27,7 @@ export default function Update() {
     e.preventDefault();
 
     try {
-      await fetch(`http://localhost:8801/books/${bookId}`, {
+      await fetch(`${API_URL}/books/${bookId}`, {
         method: "PUT",
         body: JSON.stringify(book),
         headers: {

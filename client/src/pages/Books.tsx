@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import type { Book } from "../types/book";
 import { Link } from "react-router-dom";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8801";
+
 export default function Books() {
   const [books, setBooks] = useState<Book[]>([]);
   const [errorImages, setErrorImages] = useState<Record<number, boolean>>({});
@@ -9,7 +11,7 @@ export default function Books() {
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const response = await fetch("http://localhost:8801/books");
+        const response = await fetch(`${API_URL}/books`);
         if (!response.ok) throw new Error("Network response was not ok");
         const data = await response.json();
         setBooks(data);
@@ -23,7 +25,7 @@ export default function Books() {
 
   const handleDelete = async (id: number) => {
     try {
-      const response = await fetch(`http://localhost:8801/books/${id}`, {
+      const response = await fetch(`${API_URL}/books/${id}`, {
         method: "DELETE",
       });
 

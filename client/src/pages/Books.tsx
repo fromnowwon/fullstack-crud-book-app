@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 
 export default function Books() {
   const [books, setBooks] = useState<Book[]>([]);
+  const [errorImages, setErrorImages] = useState<Record<number, boolean>>({});
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -34,6 +35,10 @@ export default function Books() {
     }
   };
 
+  const handleImageError = (id: number) => {
+    setErrorImages((prev) => ({ ...prev, [id]: true }));
+  };
+
   return (
     <div className="max-w-5xl mx-auto p-6">
       <h1 className="text-3xl font-bold mb-6 text-center">📚 My Book List</h1>
@@ -45,27 +50,40 @@ export default function Books() {
               key={book.id}
               className="bg-white shadow-md rounded-2xl p-4 flex flex-col justify-between"
             >
+              <div className="w-full h-48 mb-4 bg-gray-100 flex items-center justify-center overflow-hidden rounded-md">
+                {book.cover && !errorImages[book.id] ? (
+                  <img
+                    src={book.cover}
+                    alt={book.title}
+                    className="object-cover h-full w-full"
+                    onError={() => handleImageError(book.id)}
+                  />
+                ) : (
+                  <span className="text-gray-400 text-sm">No Image</span>
+                )}
+              </div>
+
               <div>
-                <h2 className="text-xl font-semibold text-gray-800 mb-2">
+                <h2 className="text-xl font-semibold text-gray-800 mb-1">
                   {book.title}
                 </h2>
-                <p className="text-gray-600 mb-1">📖 {book.desc}</p>
+                <p className="text-gray-600 text-sm mb-2 line-clamp-2">
+                  📖 {book.desc}
+                </p>
 
-                <span className="text-green-600 font-medium mt-2 block">
-                  ₩ {book.price}
-                </span>
+                <span className="font-medium block">₩ {book.price}</span>
               </div>
 
               <div className="flex justify-between mt-4">
                 <button
                   onClick={() => handleDelete(book.id)}
-                  className="px-4 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                  className="px-4 py-1 bg-gray-400 text-white rounded hover:bg-gray-500 cursor-pointer"
                 >
                   삭제
                 </button>
                 <Link
                   to={`/update/${book.id}`}
-                  className="px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+                  className="px-4 py-1 bg-indigo-600 text-white rounded hover:bg-indigo-700"
                 >
                   수정
                 </Link>
@@ -82,7 +100,7 @@ export default function Books() {
       <div className="mt-10 text-center">
         <Link
           to="/add"
-          className="inline-block px-6 py-2 bg-emerald-600 text-white font-medium rounded hover:bg-emerald-700 transition"
+          className="inline-block px-6 py-2 bg-black text-white font-medium rounded hover:bg-gray-800 transition"
         >
           + 새로운 책 추가
         </Link>

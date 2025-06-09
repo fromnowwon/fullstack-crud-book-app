@@ -37,33 +37,48 @@ export default function Add() {
   };
 
   return (
-    <div>
-      <h1>Add New Book</h1>
-      <input
-        type="text"
-        name="title"
-        placeholder="title"
-        onChange={handleChange}
-      />
-      <input
-        type="text"
-        name="desc"
-        placeholder="desc"
-        onChange={handleChange}
-      />
-      <input
-        type="text"
-        name="cover"
-        placeholder="cover"
-        onChange={handleChange}
-      />
-      <input
-        type="number"
-        name="price"
-        placeholder="price"
-        onChange={handleChange}
-      />
-      <button onClick={handleClick}>Add Book</button>
+    <div className="max-w-xl mx-auto p-6 bg-white shadow-lg rounded-2xl mt-10">
+      <h1 className="text-2xl font-bold mb-6 text-center text-gray-800">
+        📘 새 책 추가하기
+      </h1>
+
+      <div className="space-y-4">
+        <input
+          type="text"
+          name="title"
+          placeholder="제목"
+          onChange={handleChange}
+          className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        />
+        <input
+          type="text"
+          name="desc"
+          placeholder="설명"
+          onChange={handleChange}
+          className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        />
+        <input
+          type="text"
+          name="cover"
+          placeholder="커버 이미지 URL"
+          onChange={handleChange}
+          className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        />
+        <input
+          type="number"
+          name="price"
+          placeholder="가격 (숫자)"
+          onChange={handleChange}
+          className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        />
+
+        <button
+          onClick={handleClick}
+          className="w-full bg-indigo-600 text-white font-semibold py-2 rounded-lg hover:bg-indigo-700 transition curtor-pointer"
+        >
+          추가하기
+        </button>
+      </div>
     </div>
   );
 }

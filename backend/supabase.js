@@ -14,7 +14,26 @@ const supabase = createClient(
 );
 
 app.use(express.json());
-app.use(cors());
+
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://127.0.0.1:5173",
+  "https://main.d2o5ebd0zxhk9j.amplifyapp.com",
+  "https://mybooklist.kro.kr",
+];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true); // Postman 등 origin 없는 요청 허용
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(null, false); // 차단
+      }
+    },
+  })
+);
 
 app.get("/", (req, res) => {
   res.json("Hello from Supabase backend");

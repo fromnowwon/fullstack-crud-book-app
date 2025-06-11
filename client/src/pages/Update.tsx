@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8801";
@@ -6,8 +6,9 @@ const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8801";
 export default function Update() {
   const [book, setBook] = useState({
     title: "",
+    author: "",
     desc: "",
-    cover: null,
+    cover: "",
     price: null,
   });
 
@@ -15,7 +16,23 @@ export default function Update() {
   const location = useLocation();
   const bookId = location.pathname.split("/")[2];
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  useEffect(() => {
+    const fetchBook = async () => {
+      try {
+        const res = await fetch(`${API_URL}/books/${bookId}`);
+        const data = await res.json();
+        setBook(data);
+      } catch (error) {
+        console.error("Failed to fetch book:", error);
+      }
+    };
+
+    fetchBook();
+  }, [bookId]);
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setBook((prev) => ({
       ...prev,
       [e.target.name]:
@@ -51,20 +68,31 @@ export default function Update() {
           type="text"
           name="title"
           placeholder="제목"
+          value={book.title}
           onChange={handleChange}
           className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
         />
         <input
           type="text"
-          name="desc"
-          placeholder="설명"
+          name="author"
+          placeholder="저자"
+          value={book.author}
           onChange={handleChange}
           className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        />
+        <textarea
+          name="desc"
+          placeholder="설명"
+          value={book.desc}
+          onChange={handleChange}
+          className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 resize-y"
+          rows={5}
         />
         <input
           type="text"
           name="cover"
           placeholder="커버 이미지 URL"
+          value={book.cover}
           onChange={handleChange}
           className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
         />
@@ -72,13 +100,15 @@ export default function Update() {
           type="number"
           name="price"
           placeholder="가격 (숫자)"
+          value={book.price ?? ""}
           onChange={handleChange}
+          min={0}
           className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
         />
 
         <button
           onClick={handleClick}
-          className="w-full bg-indigo-600 text-white font-semibold py-2 rounded-lg hover:bg-indigo-700 transition curtor-pointer"
+          className="w-full bg-indigo-600 text-white font-semibold py-2 rounded-lg hover:bg-indigo-700 transition cursor-pointer"
         >
           저장하기
         </button>

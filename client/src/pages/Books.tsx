@@ -24,6 +24,9 @@ export default function Books() {
   }, []);
 
   const handleDelete = async (id: number) => {
+    const confirmed = window.confirm("정말 삭제하시겠습니까?");
+    if (!confirmed) return;
+
     try {
       const response = await fetch(`${API_URL}/books/${id}`, {
         method: "DELETE",
@@ -57,7 +60,7 @@ export default function Books() {
                   <img
                     src={book.cover}
                     alt={book.title}
-                    className="object-cover h-full w-full"
+                    className="h-full w-auto object-contain"
                     onError={() => handleImageError(book.id)}
                   />
                 ) : (
@@ -69,23 +72,32 @@ export default function Books() {
                 <h2 className="text-xl font-semibold text-gray-800 mb-1">
                   {book.title}
                 </h2>
-                <p className="text-gray-600 text-sm mb-2 line-clamp-2">
-                  📖 {book.desc}
-                </p>
 
-                <span className="font-medium block">₩ {book.price}</span>
+                <p className="text-gray-700 text-sm mb-2">{book.author}</p>
+
+                {book.desc?.trim() && (
+                  <p className="text-gray-600 text-sm mb-2 line-clamp-2">
+                    📖 {book.desc}
+                  </p>
+                )}
+
+                {book.price !== null && book.price !== undefined && (
+                  <span className="font-medium block">
+                    ₩ {book.price.toLocaleString()}원
+                  </span>
+                )}
               </div>
 
               <div className="flex justify-between mt-4">
                 <button
                   onClick={() => handleDelete(book.id)}
-                  className="px-4 py-1 bg-gray-400 text-white rounded hover:bg-gray-500 cursor-pointer"
+                  className="flex items-center px-4 py-1 bg-gray-400 text-white text-sm rounded hover:bg-gray-500 cursor-pointer"
                 >
                   삭제
                 </button>
                 <Link
                   to={`/update/${book.id}`}
-                  className="px-4 py-1 bg-indigo-600 text-white rounded hover:bg-indigo-700"
+                  className="flex items-center px-4 py-1 bg-indigo-600 text-white text-sm rounded hover:bg-indigo-700"
                 >
                   수정
                 </Link>

@@ -46,12 +46,25 @@ app.get("/books", async (req, res) => {
   res.json(data);
 });
 
-app.post("/books", async (req, res) => {
-  const { title, desc, price, cover } = req.body;
+app.get("/books/:id", async (req, res) => {
+  const { id } = req.params;
 
   const { data, error } = await supabase
     .from("books")
-    .insert([{ title, desc, price, cover }]);
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error) return res.status(500).json({ error: error.message });
+  res.json(data);
+});
+
+app.post("/books", async (req, res) => {
+  const { title, desc, author, price, cover } = req.body;
+
+  const { data, error } = await supabase
+    .from("books")
+    .insert([{ title, desc, price, author, cover }]);
 
   if (error) return res.status(500).json({ error: error.message });
   res.json({ message: "책 추가 완료", data });
@@ -59,11 +72,11 @@ app.post("/books", async (req, res) => {
 
 app.put("/books/:id", async (req, res) => {
   const { id } = req.params;
-  const { title, desc, price, cover } = req.body;
+  const { title, desc, author, price, cover } = req.body;
 
   const { data, error } = await supabase
     .from("books")
-    .update({ title, desc, price, cover })
+    .update({ title, desc, author, price, cover })
     .eq("id", id);
 
   if (error) return res.status(500).json({ error: error.message });
